@@ -1,0 +1,177 @@
+  <div class="block text-content" style="text-align: center; margin-bottom: 2rem;">
+    <h1>Formula Student Uprights</h1>
+    <h3>A collection of documentation for the creation of an FSAE car's front and rear uprights.</h3>
+    <p style="font-size: 1.1rem; margin-top: 1rem;">
+      This page is intended to both chronicle the experience I gained throughout this design process and also 
+     serve as a resource for future team members who take on this task.
+  </div>
+
+  
+<!-- 3D Model Viewer - Full Page -->
+<div class="block">
+  <div class="text-content" style="margin-bottom: 1rem;">
+
+  </div>
+
+  <model-viewer style="height: 600px;" 
+    src="contents\projects\uprights\fupright.glb" 
+    alt="A 3D model" 
+    auto-rotate 
+    camera-controls 
+    shadow-intensity="1">
+  </model-viewer>
+</div>
+
+<div class="block grid-block table-layout">
+  <div class="text-content">
+    <h1>Project Sources & References</h1>
+    <p>
+      The initial and most important part of this design process was the research phase.
+      I primarily stuck to FSAE related documentation for the creation of a load case,
+      as well as reviewing the documents of my team's previous years to build my understanding.
+      In total, somewhere between 500-700 pages of reading was involved in this step,
+      and what I have listed here is what I found most useful of what I read.
+    </p>
+    <p>
+      I also spent time reviewing and understanding the role of an upright in the context of a 
+      car's suspension system, as well as the manufacturing constraints of the project before I jumped in.
+    </p>
+  </div>
+
+
+  <!-- Table -->
+  <div class="table-container">
+    <table class="link-table" style="justify-content: left;">
+      <thead>
+        <tr>
+          <th style="font-size: large;">Abbreviated Title</th>
+          <th style="font-size: large;">Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>VT Master's Thesis: Design & Optimization of an FSAE Upright</td>
+          <td><a href="https://vtechworks.lib.vt.edu/server/api/core/bitstreams/c4a86dbf-94e8-4655-ae08-f582ee4cecf5/content" target="_blank" class="btn-small">Access</a></td>
+        </tr>
+        <tr>
+          <td>IOP Research: Design & Optimization of an FSAE Upright</td>
+          <td><a href="https://iopscience.iop.org/article/10.1088/1757-899X/1166/1/012043/pdf" target="_blank" class="btn-small">Access</a></td>
+        </tr>
+        <tr>
+          <td>JCU Research: On the Design of Rear Uprights for a Race Car</td>
+          <td><a href="https://researchonline.jcu.edu.au/64497/1/resm2020.198me0608.pdf" target="_blank" class="btn-small">Access</a></td>
+        </tr>
+        <tr>
+          <td>Politecnico Di Torino: Design of the Upright Assembly of a Formula Student Prototype</td>
+          <td><a href="https://webthesis.biblio.polito.it/27481/1/tesi.pdf" target="_blank" class="btn-small">Access</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+  <!-- Centered Text Block -->
+<div class="block text-content" style="max-width: 700px; margin: 0 auto; text-align: center;">
+  <h1>Load Case and Blocking Out</h1>
+  <p>
+    The next step in this project was the creation of several load cases. I put together a rudimentary script to find 
+    the theoretical loads on the upright when braking while cornering, which is expected to place the part under the greatest stress. 
+    The output of this script could've been used, however another load case was developed using a lap simulation another team member 
+    constructed. The most conservative numbers were used and it was decided a safety factor minimum of near 3 would be targetted.
+    This ensures that even if our load case is somehow greater than our greatest prediction, the part should still be relatively safe.
+  </p>
+</div>
+
+<!-- Right Text, Left Carousel -->
+<div class="block grid-block">
+  
+  <div class="carousel">
+    <div class="carousel-track">
+      <img src="contents/projects/uprights/full_front_upright_block.png" alt="Blocked Out Upright">
+      <img src="contents/projects/uprights/full_front_upright.png" alt="Full Front Upright">
+      <img src="contents/projects/uprights/top_outboard_planar.png" alt="Top Outboard Planar View">
+      <img src="contents/projects/uprights/rough_shape_1.png" alt="Early Rough Shape">
+    </div>
+    <div class="carousel-nav"></div>
+  </div>
+  
+  <div class="text-content">
+    <h3>Block Design</h3>
+    <p>Getting into the real CAD of the upright first focuses on blocking out the rough shape, with inspiration from past years,
+       while fulfilling some of the desired features. Each outboard point must have a specific width that aligns with the uniball
+      cup so the A arms can be connected. Additionally, it is desirable for the top outboard point to be both attached
+      by an adjustable bracket, so that the camber can be adjusted, and also be aligned so the bolt attachment is parallel to the
+    plane of the A-arm. This allows the uniball cup to have a more evenly distributed load and range of motion. </p>
+    </div>
+</div>
+
+<!-- Parallax Fullscreen Section -->
+<div class="block parallax-container" style="box-shadow: 0 10px 25px rgba(0,0,0,0.1);;">
+  <div class="parallax-bg" style="background-image: url('contents/projects/uprights/section_view_suspension.png');"></div>
+  <div class="parallax-overlay" style="background: none;">
+    <div class="text-content" style="text-align: center;">
+    </div>
+  </div>
+</div>
+
+<!-- Left Text, Right Carousel -->
+<div class="block grid-block">
+  <div class="text-content">
+    <h3>Adjustable Ackermann Brackets</h3>
+    <p>The most unique of the desired features is the ability to adjust the ackermann angle by using alternative attachment brackets
+      for the tie rod. Two designs were considered, one using a key and slot method to align the bracket and prevent it from
+      unseating, and another using two plates that fit into slots on the top and bottom of an attachment point that branches off the
+      upright's main body. The key and slot method was preferred because the motion of the tie rod places the bolt in tension rather than shear.
+    </p>
+</div>
+
+  
+<div class="carousel">
+    <div class="carousel-track">
+      <img src="contents/projects/uprights/ackermann_plate_example_1.png" alt="Ackermann Dual Plates Design">
+      <img src="contents/projects/uprights/ackermann_plate_example_2.png" alt="Ackermann Dual Plates Design">
+      <img src="contents/projects/uprights/ackermann_slot_example_1.png" alt="Ackermann Key and Slot Design">
+      <img src="contents/projects/uprights/ackermann_slot_example_2.png" alt="Ackermann Key and Slot Design">
+    </div>
+    <div class="carousel-nav"></div>
+  </div>
+</div>
+</div>
+
+<div class="block text-content" style="max-width: 700px; margin: 0 auto; text-align: center;">
+  <h1>Finite Element Analysis</h1>
+  <p>
+    With a load case finalized and having drawn an initial design, a simulation was created applying a remote force
+    to the outboard attachment points, fixing the body at the wheel's bearing interfaces, and continually running, tweaking,
+    and adding material until a reasonable safety factor was obtained. Following 100+ iterations of this process, the design 
+    was refined into a form similar to the one in the model viewer above.
+  </p>
+</div>
+
+<!-- Wide Image Carousel -->
+<div class="block" style="justify-content: center;">
+  <div class="carousel" style="height: 800px; width: 800px; justify-self: center;">
+    <div class="carousel-track" style='height: 800px; width: 800px;'>
+      <img src="contents/projects/uprights/fea_front_model.png" alt="FEA Front Model">
+      <img src="contents/projects/uprights/fea_full_model.png" alt="FEA Full Model">
+      <img src="contents/projects/uprights/fea_loadcase.png" alt="FEA Load Case">
+      <img src="contents/projects/uprights/fea_1_stress.png" alt="FEA Stress Distribution">
+      <img src="contents/projects/uprights/fea_1_sf.png" alt="FEA Safety Factor">
+    </div>
+    <div class="carousel-nav"></div>
+  </div>
+</div>
+
+<div class="block text-content" style="max-width: 700px; margin: 0 auto; text-align: center;">
+  <h1>Manufacturability & Final Notes</h1>
+  <p>
+    The design was continuously monitored to ensure it could be manufactured using a 5-axis CNC mill, generally
+    keeping to a .3" minimum fillet radius to ensure a 0.5" ball end mill could be used, and design decisions were
+    made in order to reduce the number of operations required to machine the part by sacrificing weight savings to keep some 
+    surfaces planar. The final safety factor fell somewhere around 2.9, which was determined to be enough that the part isn't
+    expected to fail. Based on <a href="https://ntrs.nasa.gov/api/citations/19660019791/downloads/19660019791.pdf" style="color: var(--accent);text-decoration:none;font-weight: bold;">
+      the fatigue life of aluminum 6061-T6</a> (page 14, R = -1 is most conservative) and assuming our load case is in the right ballpark, 
+    the lifetime would be somewhere between 100,000 and 1,000,000 cycles of the absolute worst case loading condition the
+    upright is expected to ever face.  
+  </p>
+</div>

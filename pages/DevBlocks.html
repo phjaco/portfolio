@@ -1,0 +1,332 @@
+  
+  
+  <div class="block" style="border-bottom: 2px solid var(--accent); margin-bottom: 4rem;">
+    <h1>DevBlocks Storage</h1>
+    <p>Copy and paste blocks from here into your active pages.</p>
+  </div>
+
+
+
+  <!-- PDF Viewer -->
+<div class="pdf-viewer" data-pdf-url="contents/resume/resume.pdf">
+  <div class="pdf-viewer-toolbar">
+    <span class="pdf-viewer-page-info">Loading…</span>
+  </div>
+  <div class="pdf-viewer-scroll">
+    <div class="pdf-viewer-loading">Loading PDF…</div>
+  </div>
+</div>
+
+
+<!-- Project Cards - Gallery Style -->
+  <div class="block" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+    <div class="project-card"><div class="card-overlay"><span>Project 1</span></div></div>
+    <div class="project-card"><div class="card-overlay"><span>Project 2</span></div></div>
+    <div class="project-card"><div class="card-overlay"><span>Project 3</span></div></div>
+  </div>
+
+
+<!-- Project Redirect - Left -->
+  <div class="block grid-block project-redirect" onclick="showPage('project-id-here')">
+    <div class="text-content">
+      <h3>Title Left</h3>
+      <p>Description...</p>
+    </div>
+    <div class="redirect-image-container">
+      <img src="PLACEHOLDER.jpg" alt="Project Name">
+    </div>
+  </div>
+
+
+  <!-- Project Redirect - Right -->
+<div class="block grid-block project-redirect" onclick="showPage('project-id-here')">
+  <div class="redirect-image-container">
+    <img src="PLACEHOLDER.jpg" alt="Project Name">
+  </div>
+  <div class="text-content">
+    <h3>Project Title</h3>
+    <p>A brief summary of the intensive project. This block acts as a portal to the full case study section.</p>
+    <span class="view-link">View Case Study →</span>
+  </div>
+
+</div>
+
+
+<!-- Parallax Fullscreen Section -->
+<div class="block parallax-container">
+  <div class="parallax-bg" style="background-image: url('your-large-image.jpg');"></div>
+  <div class="parallax-overlay">
+    <div class="text-content" style="text-align: center; color: white;">
+      <h2 style="color: white;">A Deeper Look</h2>
+      <p style="color: rgba(255,255,255,0.9);">This section reveals a full-screen background as you scroll past.</p>
+      <a href="#projects" class="btn" style="background: white; color: var(--accent);">See Work</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- Edge to Edge Fullscreen -->
+<div class="parallax-fullscreen">
+  <div class="parallax-bg-full" style="background-image: url('assets/your-image-here.jpg');"></div>
+  <div class="parallax-overlay-full">
+    <div class="text-content" style="text-align: center; color: white;">
+      <h2 style="color: white; font-size: 3rem; text-transform: uppercase; letter-spacing: 4px;">
+        Project Spotlight
+      </h2>
+    </div>
+  </div>
+</div>
+
+
+<!-- Left Text, Right Carousel -->
+<div class="block grid-block">
+  <div class="text-content">
+    <h2>Project Name</h2>
+    <p>Description of the project goes here. This is the text on the left side.</p>
+    <a href="#" class="btn">View Details</a>
+</div>
+
+  
+<div class="carousel">
+    <div class="carousel-track">
+      <img src="path/to/image1.jpg" alt="Slide 1">
+      <img src="path/to/image2.jpg" alt="Slide 2">
+      <img src="path/to/image3.jpg" alt="Slide 3">
+    </div>
+    <div class="carousel-nav"></div>
+  </div>
+</div>
+
+
+<!-- Right Text, Left Carousel -->
+<div class="block grid-block">
+  
+  <div class="carousel">
+    <div class="carousel-track">
+      <img src="project-image-1.jpg" alt="Gallery Image 1">
+      <img src="project-image-2.jpg" alt="Gallery Image 2">
+      <img src="project-image-3.jpg" alt="Gallery Image 3">
+    </div>
+    <div class="carousel-nav"></div>
+  </div>
+
+  <div class="text-content">
+    <h3>Detailed Gallery</h3>
+    <p>This carousel allows users to swipe through multiple project views. It is purely for display and does not redirect the page.</p>
+    <a href="#" class="btn">View Details</a>
+  </div>
+
+</div>
+
+
+<!-- PDF Download Section -->
+<div class="block grid-block">
+  <div class="text-content">
+    <h2>Research Paper</h2>
+    <p>Read the full documentation regarding this case study.</p>
+    <a href="files/my-document.pdf" target="_blank" class="btn">Download PDF</a>
+  </div>
+  
+  <div class="pdf-preview">
+    <img src="images/pdf-cover.jpg" alt="PDF Cover">
+  </div>
+</div>
+
+<!-- 3D Model Viewer - Full Page -->
+<div class="block">
+  <div class="text-content" style="margin-bottom: 1rem;">
+    <h2>3D Concept</h2>
+    <p>Click and drag to rotate the model. Scroll to zoom.</p>
+  </div>
+
+  <model-viewer 
+    src="contents/projects/uprights/fupright.glb" 
+    alt="A 3D model" 
+    auto-rotate 
+    camera-controls 
+    shadow-intensity="1">
+  </model-viewer>
+</div>
+
+<!-- Centered Text Block -->
+<div class="block text-content" style="max-width: 700px; margin: 0 auto; text-align: center;">
+  <h2>Simple Text Block</h2>
+  <p>Sometimes you just need a paragraph of text centered in the middle of the screen without any images.</p>
+</div>
+
+
+<!-- Separator Block-->
+<hr style="border: 0; height: 1px; background: rgba(0,0,0,0.1); margin: 4rem 0;">
+
+<!-- Invisible Separator Block -->
+<div style="height: 6rem; width: 100%;"></div>
+
+<!-- Wide Image Carousel -->
+<div class="block">
+  <div class="carousel">
+    <div class="carousel-track">
+      <img src="path/to/wide1.jpg" alt="Wide 1">
+      <img src="path/to/wide2.jpg" alt="Wide 2">
+    </div>
+    <div class="carousel-nav"></div>
+  </div>
+</div>
+
+
+<!-- 3D Model Block - Model Right -->
+<div class="block grid-block">
+  
+  <div class="text-content">
+    <h2>The Prototype</h2>
+    <p>
+      Here is a fully interactive 3D render of the concept. 
+      You can rotate, zoom, and pan around the object to see the details.
+    </p>
+    <div class="tags">
+      <span style="background:var(--accent); color:white; padding:4px 10px; border-radius:15px; font-size:0.8rem;">Blender</span>
+      <span style="border:1px solid var(--text); padding:3px 10px; border-radius:15px; font-size:0.8rem;">GLB</span>
+    </div>
+  </div>
+
+  <model-viewer 
+    src="contents/home/fupright.glb" 
+    alt="A 3D model of a prototype"
+    auto-rotate 
+    camera-controls 
+    shadow-intensity="1"
+    style="background-color: #f0f0f0; border-radius: 12px;">
+  </model-viewer>
+
+</div>
+
+
+<!-- 3D Model Block - Model Left -->
+<div class="block grid-block">
+  
+  <model-viewer 
+    src="path/to/another-model.glb" 
+    alt="A 3D sculpture"
+    camera-controls 
+    shadow-intensity="1"
+    interaction-prompt="auto"
+    style="background-color: #e8e8e8; border-radius: 12px;">
+  </model-viewer>
+
+  <div class="text-content">
+    <h2>Architectural View</h2>
+    <p>
+      This model demonstrates the spatial relationship between the core 
+      structure and the surrounding environment. 
+    </p>
+    <a href="#" class="btn">Download Assets</a>
+  </div>
+
+</div>
+
+<div class="block grid-block table-layout">
+  <div class="text-content">
+    <h2>Project Sources & References</h2>
+    <p>
+      The initial and most important part of this design process was the research phase.
+      I primarily stuck to FSAE related documentation for the creation of a load case,
+      as well as reviewing the documents of my team's previous years to build my understanding.
+      In total, somewhere between 500-700 pages of reading was involved in this step,
+      and what I have listed here is what I found most useful of what I read.
+    </p>
+    <p>
+      I also spent time reviewing and understanding the role of an upright in the context of a 
+      car's suspension system, as well as the manufacturing constraints of the project before I jumped in.
+    </p>
+  </div>
+
+
+  <!-- Table -->
+  <div class="table-container">
+    <table class="link-table">
+      <thead>
+        <tr>
+          <th>Abbreviated Title</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>VT Master's Thesis: Design & Optimization of an FSAE Upright</td>
+          <td><a href="https://vtechworks.lib.vt.edu/server/api/core/bitstreams/c4a86dbf-94e8-4655-ae08-f582ee4cecf5/content" target="_blank" class="btn-small">Access</a></td>
+        </tr>
+        <tr>
+          <td>IOP Research: Design & Optimization of an FSAE Upright</td>
+          <td><a href="https://iopscience.iop.org/article/10.1088/1757-899X/1166/1/012043/pdf" target="_blank" class="btn-small">Access</a></td>
+        </tr>
+        <tr>
+          <td>JCU Research: On the Design of Rear Uprights for a Race Car</td>
+          <td><a href="https://researchonline.jcu.edu.au/64497/1/resm2020.198me0608.pdf" target="_blank" class="btn-small">Access</a></td>
+        </tr>
+        <tr>
+          <td>Politecnico Di Torino: Design of the Upright Assembly of a Formula Student Prototype</td>
+          <td><a href="https://webthesis.biblio.polito.it/27481/1/tesi.pdf" target="_blank" class="btn-small">Access</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!--Dropdown w/ math -->
+
+<details class="dropdown">
+  <summary class="dropdown-summary">
+    <span>Show full derivation &amp; equations</span>
+    <span class="dropdown-arrow"></span>
+  </summary>
+  <div class="dropdown-content">
+    <p>'$$PV = nRT; \quad \frac{P}{RT} = \frac{n}{V} \tag{1}$$'</p>
+    <!-- ...rest of your equations... -->
+  </div>
+</details>
+
+
+<!--Plain dropdown-->
+
+<details class="dropdown">
+  <summary class="dropdown-summary">
+    <span>Bill of Materials</span>
+    <span class="dropdown-arrow"></span>
+  </summary>
+  <div class="dropdown-content">
+    <p>Some regular text, a list, a table, whatever you want.</p>
+  </div>
+</details>
+
+
+<div class="image-block-2-1" data-large="right">
+  <img class="img-a" src="path/to/image1.jpg" alt="Description">
+  <img class="img-b" src="path/to/image2.jpg" alt="Description">
+  <img class="img-large" src="path/to/image3.jpg" alt="Description">
+</div>
+
+<div class="image-block-2-1" data-large="left">
+  <img class="img-a" src="path/to/image1.jpg" alt="Description">
+  <img class="img-b" src="path/to/image2.jpg" alt="Description">
+  <img class="img-large" src="path/to/image3.jpg" alt="Description">
+</div>
+
+
+<div class="pdf-viewer-h" data-pdf-url="contents/projects/choked_flow/ChokedFlowPresentation.pdf">
+  <div class="pdf-viewer-h-toolbar">
+    <span class="pdf-viewer-h-page-info">Loading…</span>
+  </div>
+  <div class="pdf-viewer-h-scroll">
+    <div class="pdf-viewer-h-loading">Loading PDF…</div>
+  </div>
+</div>
+
+      <div class="block-2-wide">
+        <div class="block-2-wide-slot">
+          <img src="contents/projects/magnetic_damping/magnetic_damping_cover.png" alt="Description">
+          <p style="text-align: center;">Comparison of damping ratios against the height of the magnetic damper from the rail.</p>
+        </div>
+        <div class="block-2-wide-slot">
+          <img src="contents/projects/magnetic_damping/dampingratioline.png" alt="Description">
+          <p style="text-align: center;">Comparison of Predicted vs. Experimental Damping Ratio along a 1:1 line.</p>
+        </div>
+      </div>

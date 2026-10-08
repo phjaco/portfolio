@@ -1,0 +1,200 @@
+  <div class="block text-content" style="text-align: center;">
+    <h1>Electric Bicycle</h1>
+    <!-- Left Text, Right Carousel -->
+<div class="block grid-block">
+          <!-- Table -->
+  <div class="table-container" style="justify-content: center; align-items: center;">
+    <table class="link-table" style="justify-content: center; align-items: center;">
+      <thead style="justify-content: center; align-items: center;">
+        <tr>
+          <th style="font-size: large; justify-content: center; align-items: center;">Specs</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2018 Specialized Fuse Comp 6Fattie/29 Frame</td>
+        </tr>
+        <tr>
+          <td>PF30 to BSA Aluminum Crank Adapter, Milled to Fit</td>
+        </tr>
+        <tr>
+          <td>CYC X1 Pro 4, 6000W Mid-drive Motor</td>
+        </tr>
+        <tr>
+          <td>CYC A65 Battery, 65V 20Ah 18s4p, Samsung 50S 21700 Cells</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  
+<div class="carousel">
+    <div class="redirect-image-container">
+      <img src="path/to/image1.jpg" alt="Slide 1">
+    </div>
+  </div>
+
+
+
+</div>
+    <p>The majority of this project was in the research portion. I spent a year between the summers of '24 and '25 regularly researching methods to the depth of determining the viability of spot welding cells and assembling my own battery.</p>
+    <p>
+      There is a significant amount of depth to building out an electric bike and you really can start from any point in the process. 
+      There are wonderful videos involving assembling your own gearboxes, battery packs, and on occasion custom motor controllers and battery management systems. 
+      As a mechanical engineer whose present knowledge of electrical systems did not come naturally, learning electrical system development for a personal project 
+      I thought would've been outside the scope I was willing to take on, so the closest to the bottom I was willing to go was at most battery pack development 
+      with a stock BMS and motor controller, and the highest was buying a bike outright, as in recent years there has been significant commercial competition in 
+      the electric bicycle market.
+    </p>
+    <details class="dropdown">
+  <summary class="dropdown-summary">
+    <span style="color:var(--accent);font-size: small; font-weight: bold;">Note on Legal Considerations</span>
+    <span class="dropdown-arrow"></span>
+  </summary>
+  <div class="dropdown-content">
+    <p>
+      There are additional aspects introduced by this commercialization, primarily increasing government regulation from originally nearly no legislature.
+      These regulations are logical, as there have been an increasing number of lethal incidents regarding these vehicles, and presently many states 
+      don't require registration or a driver's license for bikes under 750W. The issue is you cannot determine if a bike is under 750W without stopping the vehicle besides
+      monitoring the speed for the allowed speed limits, which can be mitigated by the user not exceeding standard 28/18mph speed limits applied to the different ebike classes, or
+      by knowing every model of ebike by heart, which is impractical with an increasing number of imported models that exceed legal limits. These laws additionally demonstrate a 
+      misunderstanding of how ebikes operate as they are based on the wattage that the motor is rated for, but unlike an engine, a motor can be operated
+      above the wattage it's rated for, can be rated for a wattage lower than it is capable of, and the motor controller can be tweaked in hardware by anyone with aftermarket
+      tools to adjust the limits of the vehicle. In some cases, these bikes are designed to be legal with a single wire made accessible that, when cut, remove the mandated limits from the vehicle.
+      In essence, most bikes are easily capable of exceeding the legal limits imposed on them, and the responsibility lies on the owner to use their vehicle in good faith.
+    </p>
+    <p>
+      The bike I built is software limited to not exceed the allowed limits when used on public roads and property, and
+      I sought out legislature (VA Code 46.2-100 & 46.2-904.1) to ensure I abide to the law when on public roads. The motor selected's sticker rates it for 250W continuous,
+      but it is physically capable of reaching outputs several times that. I have no intention of using that upper limit unless on private property, and if I want to someday
+      I'd first get the vehicle registered as a moped or motorcycle and acquire an M2 designation to conform to the definitions assigned in 46.2-100. At the core of it, I'm
+      acutely aware of the dangers related to these vehicles for both the rider and others and I always ride responsibly. 
+    </p>
+  </div>
+</details> 
+
+
+
+        <!-- Table -->
+  <div class="table-container" style="justify-content: center; align-items: center;">
+    <table class="link-table" style="justify-content: center; align-items: center;">
+      <thead style="justify-content: center; align-items: center;">
+        <tr>
+          <th style="font-size: large; justify-content: center; align-items: center;">Goals</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Maximize wattage per dollar.</td>
+        </tr>
+        <tr>
+          <td>End product should appear as a traditional bicycle rather than stylized as a motocross or motorcycle.</td>
+        </tr>
+        <tr>
+          <td>Preferred that the systems are cohesive.</td>
+        </tr>
+        <tr>
+          <td>The goal is to have an electric bicycle, not have continually changing plans of one for an extended duration.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+      <!-- Separator Block-->
+      <hr style="border: 0; height: 1px; background: rgba(0,0,0,0.1); margin: 4rem 0;">
+
+  <h1>The Motor</h1>
+  <p>There are two motor mounting methods for an electric bicycle: mid-drive or hub drive.</p>
+
+<!-- Right Text, Left Carousel -->
+<div class="block grid-block">
+
+  <div class="text-content">
+    <h3>Mid-Drive</h3>
+    <p>The mid drive motor is positioned at the crankset, typically with an additional geartrain system.
+      This allows for the motor to have a finer adjusted torque, as you can gear it down, and the center
+      of mass isn't moved longitudinally as the motor sits under the rider. This only lowers the center of
+      mass, which is beneficial for stability anyways.
+    </p>
+  </div>
+
+  <div class="text-content">
+    <h3>Hub Drive</h3>
+    <p>Hub motors are mounted in the wheel and provide direct drive. They require completely replacing
+      one or more tires, and they move the center of mass towards the rear of the bike if you only mount one,
+      or keep the center of mass under the rider but drastically increase the mass of the bike on its own.
+      They're generally heavier as well.
+    </p>
+  </div>
+</div>
+
+<p>
+    Mid-drive motors are superior in every way except for cost, given their complexity. 
+</p>
+<p>
+  I decided that I'd want a mid-drive if I could find one for an slightly increased price when compared to a hub, or with a significant power increase.
+  In the end, I selected a CYC Motors X1 Pro 4, a 6000W capable motor and controller with easily the highest power density in a motor I'd seen available,
+  at a price that was ~$1200, controller included. I choose it additionally for the warranty and reliability of the company, as they had several generations
+  of this product and another product competing with typical Bafang and Tongsheng conversion kits in the 750-1500W range, and the power to price ratio was 
+  unmatched by any other motor. There was further consideration and research than this abridged version, but the specifications of the CYC Motor were so
+  exceptional I waited an additional few months for corrobative reviews and to see if anything else entered the market on the same level. It is as powerful as claimed.
+</p>
+
+<!-- Centered Text Block -->
+<div class="block text-content" style="max-width: 700px; margin: 0 auto; text-align: center;">
+  <h1>The Battery</h1>
+  <p>While waiting for more evidence of the motor's specifications, I began researching the battery options. If I wanted to build my own battery, I would need
+    to start from the base by locating reliable cells from a manufacturer, find another way to source high quality cells, or lower my standards of quality. The
+    third option was unacceptable, the first option would likely be too expensive at ~$500 for 72  Samsung 50S 21700s, plus nickel tape, a
+    BMS, the enclosure, and both the time and tools for assembly. This would likely be a few months of ordering, assembly, and ironing out issues for a product that would ultimately
+    be subpar as I have no prior experience. The second option, although more viable, boiled out to likely buying a secondhand battery module for an EV, potentially crashed, salvaging
+    the usable cells, and using those for assembly. It would've saved a few hundred dollars, but all of the cells likely would've seen some use and I wasn't fully comfortable tearing
+    apart a battery module. For me, this meant that building my own battery was not viable. 
+  </p>
+  <p>
+    Given the criteria, I elected to purchase a battery from the same supplier as the motor to keep everything under one provider. This decision ensured compatibility and meant the 
+    entire electrical system would be basically designed as one cohesive unit. The battery is a CYC A65, a 65V 20Ah 18s4p pack with Samsung 50S 21700 cells. It came in around $1000,
+    which is likely equivalent to what it would have cost me to build a worse battery from scratch, as it is in a powdercoated aluminum case and I certainly wouldn't have gone to that
+    degree of craftsmanship.
+  </p>
+
+
+  <!-- Right Text, Left Carousel -->
+  <h1>The Issues</h1>
+  <div class="block grid-block">
+
+  <div class="text-content" style="vertical-align: top;">
+    <h3>Bottom Bracket</h3>
+    <p>
+      When I bought my frame, I bought it secondhand and didn't evaluate the bottom bracket closely, as I was
+      getting a well regarded bike for an exceptionally good price.
+      It turned out that the bottom bracket was PF30, and the supported BBs are BSA 68/73/83mm
+      and BB92. Luckily, BSA is threaded with an OD ~34.8mm, and PF30 has a smooth bore diameter ~46mm,
+      so all I would need is a bottom bracket adapter to convert the larger PF30 down to BSA's size. I purchased an aluminum adapter and 
+      discovered that the adapter had a shoulder that was too small for the spindle of the CYC X1 Pro 4 to fit. At this
+      point I had moved back into college and was building it in my livingroom and had already spent a month building and waiting on packages to come in, so I just took it to
+      the machine shop at school and had the ID milled down until it was a light pressfit instead of returning it and finding a new adapter from a different supplier.
+    </p>
+  </div>
+
+  <div class="text-content" style="vertical-align: top;">
+    <h3>The Display</h3>
+    <p>
+      When I received and installed the electric drivetrain, I discovered that it wouldn't turn on and the
+      display would only light momentarily. This meant I had to troubleshoot an electrical system 
+      I had never interacted with before, and though at the time I understood the role of every component, I did not know how they were actually connected together. 
+      I first tested the battery with a multimeter and confirmed it was putting out 65V, then tested the controller was
+      receiving power and functioning correctly by identifying it briefly putting out a bluetooth signal. To test the display I jumped two of the pinouts with a dupont wire
+      to bypass it in the harness' communication loop, which would identify if the display was the issue if the bike could then turn on. The bike powered on confirming the
+      display was the issue, so the supplier was contacted and I received a replacement display a few weeks later that worked.
+    </p>
+  </div>
+</div>
+
+
+
+</div>

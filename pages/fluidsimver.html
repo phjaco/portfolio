@@ -1,0 +1,97 @@
+  <div class="block text-content" style="text-align: center;">
+    <h1>Fluid Simulation</h1>
+    <p>The goal for this experiment was to test the validity of several 2D and 3D simulations against wind tunnel data. This involved creating 3D models of wings from their splines, making them compatible with the wind tunnel, creating an ANSYS environment that mirrored the real world situation, and then testing a range of values. The NASA FoilSim and XFoil were tested by my groupmates, and I attempted to tackle ANSYS with no prior experience.</p>
+  </div>
+
+<div class="block grid-block">
+  <div class="text-content">
+  <model-viewer style="height: 300px;" 
+    src="contents\projects\fluidsimver\E243.glb" 
+    alt="A 3D model" 
+    auto-rotate 
+    camera-controls 
+    shadow-intensity="1"
+    style="background-color: #f0f0f0;">
+  </model-viewer>
+</div>
+  <div class="text-content">
+  <model-viewer style="height: 300px;" 
+    src="contents\projects\fluidsimver\NACA2415.glb" 
+    alt="A 3D model" 
+    auto-rotate 
+    camera-controls 
+    shadow-intensity="1"
+    style="background-color: #f0f0f0;">
+  </model-viewer>
+</div>
+</div>
+
+
+<div class="block text-content" style="max-width: auto; margin: 0 auto; text-align: center;">
+    <h3>3D Models</h3>
+    <p>The 3D models used both in my ANSYS simulations and printed for the wind tunnel were created in Fusion
+      using a plugin that converted the coordinates in an xml file into a 2D sketch and scaled it to an 
+      inputted chord length. The wind tunnel attachment point was added based on the shaft in 
+      the wind tunnel, and it was attempted to make the attachment point as non-intrusive to the profile
+      as possible. The attachment point was not included in the 2D simulations, which only used the spline profile.
+      Chord lengths were set at 6 inches for both wings.
+    </p>
+    <h3>ANSYS</h3>
+    <p>
+      There are right ways to use ANSYS and many wrong ways to use ANSYS, and it is important to understand
+      both for improvement. I say this because I most certainly used ANSYS incorrectly in this experiment,
+      for a number of reasons, the largest being time. In total, we had to run 30 trials; 2 wings, 3 speeds, 5
+      angles of attack. To set up a proper 2D ANSYS simulation, what you're supposed to do is open the ANSYS
+      workbench, add a Fluent (Flow) block to the workspace, add your geometry, adjust it in the viewer, 
+      draw the bounding box, generate essentially a triangulated negative body that subtracts the wing
+      from the bounding box with increasing resolution as it approaches the wing surface, define outlets
+      and inlets, simulate. Or something near that, with adjustable variables along the way. I know this 
+      is the proper way to do this, but with ansys taking 8+ hours to install from digital CDROMs that require
+      an entirely separate software to digitally load and unload discs every 45 minutes of installation,
+      the project was becoming more time intensive than was reasonable. On average, it would take me 30 minutes
+      to adjust each new trial, which is being optimistic and assuming I'd have no hiccups and the simulations would run perfectly, translating to
+      15 hours of simulation work at minimum. This was excessive for only representing 1/3 of the testing data,
+      and wasn't even the 3D analysis that we wanted. So, I tried clicking buttons in ANSYS Discovery instead.
+    </p>
+  </div>
+    <div class="image-block-4-square">
+  <img src="contents\projects\fluidsimver\fluid_sim_side - copy.png" alt="Description">
+  <img src="contents\projects\fluidsimver\fluidsim_cover.jpg" alt="Description">
+  <img src="contents\projects\fluidsimver\fluidsim_setup.png" alt="Description">
+  <img src="contents\projects\fluidsimver\fluidsim_bounding.png" alt="Description">
+</div>
+  <div style="max-width: auto; margin: 0 auto; text-align: center;">
+    <p>
+      ANSYS Discovery is a modernization of the Workbench experience and is a completely 3D environment.
+      The largest benefits I found is that it's more intuitive to someone with more CAD experience than 
+      block coding like me, and more importantly it's both 3D and has a lightweight approximate solver
+      that's not nearly as powerful as Fluent but is substantially faster, converging in less than a minute per
+      solve. The downsides are that it updates light simulation previews for most adjustments, making it lag,
+      and has a steep learning curve. The biggest issue with the simulations I created was that I noticed the dimensions 
+      of the wind tunnel boundary box could dramatically alter the performance of the wing, which makes me suspect that
+      much of the error I saw could be attributed to issues with the bounding box setup; my theory is that it increased the
+      volumetric flow rate because the controlled variable was velocity from the inlet, and in reality it's more that the 
+      fan has a set flow rate it produces that was dispersed by the honeycomb flow straighteners. Regardless, 
+      what's important is that Discovery reduced the time for data collection from 15 hours
+      of simulation time to 1 hour of simulation time and 6 hours discerning how to use the program well
+      enough to produce data that seemed reasonable.      
+    </p>
+    <p>
+      The results were disappointing consistently. The percent error for all trials was significant,
+      and for the ANSYS trials in particular, error sat near 50% and 80% for respective wings in lift, 
+      and then 80% and 50% in drag, with some extremities at the ends of the tested range up to 250%.
+      This consistent error also reinforces to me that our issues were systemic with the way we took our data rather 
+      than intrinsic to the experiment itself. The full experiment can be read below.
+    </p>
+
+
+  <!-- PDF Viewer -->
+<div class="pdf-viewer" data-pdf-url="contents/projects/fluidsimver/FluidSimExperiment.pdf">
+  <div class="pdf-viewer-toolbar">
+    <span class="pdf-viewer-page-info">Loading…</span>
+  </div>
+  <div class="pdf-viewer-scroll">
+    <div class="pdf-viewer-loading">Loading PDF…</div>
+  </div>
+</div>    
+</div>

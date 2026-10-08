@@ -669,10 +669,10 @@ body.in-project .project-taskbar {
   left: 0;
   width: 100%;
   height: 120%; /* Extra height handles the parallax movement buffer */
-  
+
   /* File Reference Handling */
   background-size: cover;
-  background-position: center;
+  background-position: flex;
   background-repeat: no-repeat;
   background-attachment: fixed; /* Creates the "cutout" scroll effect */
   
@@ -1039,3 +1039,248 @@ body.in-project .back-to-projects.scrolled-down {
     aspect-ratio: auto;
   }
 }
+/* -------------------------------------------------------------------------- */
+/* LAZY-LOADED PAGE STATES                                                    */
+/* -------------------------------------------------------------------------- */
+
+.page-loading-spinner {
+  padding: 6rem 1rem;
+  text-align: center;
+  color: var(--text);
+  opacity: 0.7;
+  min-height: 60vh; /* keeps the page from looking empty/collapsed while loading */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-loading-error {
+  padding: 6rem 1rem;
+  text-align: center;
+  color: var(--text);
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.page-loading-error a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* -------------------------------------------------------------------------- */
+/* PDF VIEWER — HORIZONTAL (page-by-page, left/right scroll)                  */
+/* -------------------------------------------------------------------------- */
+
+.pdf-viewer-h {
+  background: var(--card-bg);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
+
+.pdf-viewer-h-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--bg);
+  background: var(--bg);
+  font-size: 0.9rem;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.pdf-viewer-h-scroll {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  gap: 1rem;
+  padding: 1.5rem 1rem;
+  height: 80vh;
+  background: var(--bg);
+}
+
+.pdf-page-h {
+  flex: 0 0 auto;
+  height: 100%;
+  scroll-snap-align: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pdf-page-h canvas {
+  height: 100%;
+  width: auto;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  display: block;
+}
+
+.pdf-page-h-placeholder {
+  height: 100%;
+  aspect-ratio: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  opacity: 0.4;
+  font-size: 0.85rem;
+  background: repeating-linear-gradient(
+    45deg, var(--card-bg), var(--card-bg) 10px, var(--bg) 10px, var(--bg) 20px
+  );
+}
+
+.pdf-viewer-h-loading {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--text);
+}
+
+/* -------------------------------------------------------------------------- */
+/* IMAGE BLOCK — 4 squares across, collapses to 2x2 on narrow screens         */
+/* -------------------------------------------------------------------------- */
+
+.image-block-4-square {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.image-block-4-square img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius);
+  display: block;
+}
+
+/* Collapse to 2x2 once four squares side-by-side would get too cramped */
+@media (max-width: 700px) {
+  .image-block-4-square {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* THREE-WIDE BLOCK — mixed image/text slots, stacks on narrow screens        */
+/* -------------------------------------------------------------------------- */
+
+.block-3-wide {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+  align-items: start;
+}
+
+.block-3-wide-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.block-3-wide-slot img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  display: block;
+}
+
+.block-3-wide-slot h3,
+.block-3-wide-slot h4 {
+  margin: 0;
+}
+
+.block-3-wide-slot p {
+  margin: 0;
+}
+
+/* Stack to a single column on narrow screens */
+@media (max-width: 768px) {
+  .block-3-wide {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* TWO-WIDE BLOCK — mixed image/text slots, stacks on narrow screens          */
+/* -------------------------------------------------------------------------- */
+
+.block-2-wide {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+  align-items: start;
+}
+
+.block-2-wide-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.block-2-wide-slot img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  display: block;
+}
+
+.block-2-wide-slot h3,
+.block-2-wide-slot h4 {
+  margin: 0;
+}
+
+.block-2-wide-slot p {
+  margin: 0;
+  text-align: flex;
+}
+
+/* Stack to a single column on narrow screens */
+@media (max-width: 768px) {
+  .block-2-wide {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* ONE-WIDE BLOCK — single image, optional caption, centered                  */
+/* -------------------------------------------------------------------------- */
+
+.block-1-wide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.5rem auto;
+  max-width: 600px; /* controls how large the image gets — override per-instance if needed */
+}
+
+.block-1-wide img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  display: block;
+}
+
+.block-1-wide p {
+  margin: 0;
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Full-width variant — no max-width cap, e.g. for a wide diagram or panorama */
+.block-1-wide.full-width {
+  max-width: 100%;
+}
+

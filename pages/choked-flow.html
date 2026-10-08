@@ -1,0 +1,94 @@
+  <div class="block text-content" style="text-align: center;">
+    <h1>Choked Flow Impulse Prediction</h1>
+    <p>This is a walkthrough of the process for deriving and conducting an experiment to predict the impulse imparted by a pressurized vessel as it discharges to atmospheric pressure. This lab was created and conducted by a team of three people including myself, and my role was coming up with the larger idea, locating relevant documents, deriving the math into a form we could use for our theoretical model, and creating a graphical theoretical model we could easily adjust. </p>
+  </div>
+
+<!-- Separator Block-->
+<hr style="border: 0; height: 1px; background: rgba(0,0,0,0.1); margin: 4rem 0;">
+
+<!-- Project Redirect - Left -->
+  <div class="block grid-block">
+    <div class="text-content">
+      <h3>Basic Model</h3>
+      <p>The base of the experiment is a pressurized vessel attached to a pendulum as seen in the image. There is an encoder attached to the rotation point, and the physical properties of the system (mass, volume, pressure) are defined or measurable. This setup was provided as one of several options for the creation of your own experiment. It's often better to keep it simple and not risk impacting your grade. </p>
+      <p>Our idea was to take the experiment a step beyond predicting the force of the release by instead predicting the impulse, which would require more assumptions and calculations but be a more interesting experiment to conduct as we'd be testing a model we developed ourselves instead of one that has been more commonly tested.</p>
+      <p>The major assumption made for this is that a <a style="color:var(--text);text-decoration:none;font-weight:bold;">choked flow regime</a> is both satisfied and is also responsible for the majority of the impulse enacted on the system.</p>
+    </div>
+    <div class="redirect-image-container">
+      <img src="contents/projects/choked_flow/force_model.png" alt="Project Name" style='max-width: 400px; height:auto; border:2px solid var(--text); border-radius: 2px;'>
+    </div>
+  </div>
+  
+<!-- Centered Text Block -->
+<div class="block text-content" style="max-width: 700px; margin: 0 auto; text-align: center;">
+  <h3>Choked Flow Regime</h3>
+  <p>Choked flow occurs when a vessel's interior pressure is significantly greater than that of the pressure downstream, surpassing a critical pressure ratio. When the vessel pressure exceeds this critical amount, the flow velocity is approximated as holding constant at the speed of sound for the fluid.</p>
+  <img src="contents/projects/choked_flow/choked_flow_example.png" alt="Example Diagram" style='max-width: 500px; height:auto;'>
+  <p>For example, if the upstream pressure is 14.7 psi (1 atm), vessel pressure is 85 psi, and the fluid is dry air at 20°C, then the heat capacity ratio is 1.4, the critical pressure ratio is 1.893, and the flow velocity is roughly the speed of sound while discharging from 85 psi to 27.8 psi. Our additional assumption beyond Choked Flow applying was that the air released following choked flow would not be significant.</p>
+</div>
+
+<details open class="dropdown">
+  <summary class="dropdown-summary">
+    <span style="color:var(--accent);font-size: x-large; font-weight: bold;">The Math</span>
+    <span class="dropdown-arrow"></span>
+  </summary>
+  <div class="dropdown-content">
+    <p>These are the original workings I used when developing the theoretical model. They were largely based off a paper by Dean Wheeler from BYU that I'd found, but their approach targeted a relationship between the pressure and temperature in the tank relative to a time constant.</p>
+    <p>The goal of our math was to determine an impulse by integrating the standard thrust equation, so somewhere near eqn 9 we deviate.</p>
+    <p>First, the Ideal Gas Law:</p>
+    '$$PV = nRT; \quad \frac{P}{RT} = \frac{n}{V} \tag{1}$$'
+    <p>By substituting '$\rho = \frac{nM}{V}$', where M is the molecular weight of air, ~0.02896 kg/mol, the following is derived:</p>
+    '$$\rho = \frac{PM}{RT} \tag{2}$$'
+    <p>Next, thermodynamic relationships for pressure and temperature in a reversible adiabatic expansion of a constant-heat-capacity ideal gas are referenced:</p>
+    '$$P = P_0\left(\frac{\rho}{\rho_0}\right)^{\gamma} \tag{3}$$'
+    '$$T = T_0\left(\frac{\rho}{\rho_0}\right)^{\gamma-1} \tag{4}$$'
+    <p>“0” subscript indicates initial, known pressures, temperatures, and density of the gas.</p>
+    <p>Application of the above equations to tank conditions:</p>
+    '$$P_* = P_{tank}\left(\frac{\rho_*}{\rho_{tank}}\right)^{\gamma} \tag{5}$$'
+    '$$T_* = T_{tank}\left(\frac{\rho_*}{\rho_{tank}}\right)^{\gamma-1} \tag{6}$$'
+    <p>'$$\gamma = 1.4$$' is used for air; the goal here is to link the pressure and temperature of the tank over time to the density of gas in the tank. </p>
+    <p>To find the density of the gas in the tank as it releases, we need to approximate it under the conditions of choked flow, which are met when '$P_{\text{tank}} \ge P_{\text{atm}} \left( \frac{\gamma + 1}{2} \right)^{\frac{\gamma}{\gamma - 1}}$'. Again, this is the region we actually care about, as when the flow isn’t choked the pressure is low enough that its impulse can be assumed negligible. Under choked flow,the velocity of the gas at the nozzle is exactly the speed of sound, or 343 m/s. Applying this gives the following:</p>
+    '$$\frac{\rho_*}{\rho_{tank}} = \left(\frac{2}{\gamma+1}\right)^{\frac{1}{\gamma-1}} \tag{7}$$'
+    <p>This equation can be substituted in several places. Ideal gases only depend on temperature for the speed of sound, in the following equation that replaced elements of '$T_{\text{*}}$' with the density equation.</p>
+    '$$v_* = c_* = \left(\frac{2\gamma}{\gamma+1}\cdot\frac{RT_{tank}}{M}\right)^{\frac{1}{2}} \tag{8}$$'
+    <p>With the effective velocity now found, the mass flow rate can be calculated, where '$d_*$' is nozzle diameter. '$C_d$' is the “discharge coefficient”, and depends on how the nozzle transitions from the tank’s surface to the nozzle, and how it releases into the air, i.e. sharp corners vs. filleted edges. Generally, we can assume it’s likely ~0.82, though it could range from 0.60 to 0.98.</p>
+    '$$\frac{dm}{dt} = C_d A_* \rho_* v_*, \qquad A_* = \frac{\pi}{4}d_*^2 \tag{9}$$'
+    <p>Applying all of the previously found equations,</p>
+    '$$\frac{dm}{dt} = C_d A_* \rho_{tank}\left(\frac{2}{\gamma+1}\right)^{\frac{1}{\gamma-1}}\left(\frac{2\gamma}{\gamma+1}\cdot\frac{RT_{tank}}{M}\right)^{\frac{1}{2}} = C_d A_* \rho_{tank}\left(\gamma\frac{RT_{tank}}{M}\right)^{\frac{1}{2}}\left(\frac{2}{\gamma+1}\right)^{\frac{\gamma+1}{2(\gamma-1)}} \tag{10}$$'
+    <p>The thrust equation is as follows</p>
+    '$$F(t) = \frac{dm}{dt}v_*(t) + \left[P_*(t) - P_{atm}\right]A_* \tag{11}$$'
+    <p>The literature used as reference for the equations above suggests either an adiabatic or isothermal assumption. Choosing adiabatic leads to the following:</p>
+    '$$\frac{dm}{dt}v_*(t) = C_d A_* P_{tank}(t)\left[\gamma\left(\frac{2}{\gamma+1}\right)^{\frac{\gamma}{\gamma-1}}\right] \tag{12}$$'
+    <p>Factoring out '$P_{\text{tank}}(t) \left[ \gamma \left( \frac{2}{\gamma + 1} \right)^{\frac{\gamma}{\gamma - 1}} \right]$' from both the definition of '$P_*$' and mass flow rate/velocity:</p>
+    '$$F(t) = A_*\left(P_{tank}(t)\left[\left(\frac{2}{\gamma+1}\right)^{\frac{\gamma}{\gamma-1}}\right](\gamma C_d + 1) - P_{atm}\right) \tag{13}$$'
+    <p>Where '$P_{\text{tank}}(t)$' is:</p>
+    '$$P_{tank}(t) = P_0\left[1 + \left(\frac{\gamma-1}{2}\right)\frac{t}{\tau}\right]^{\frac{2\gamma}{1-\gamma}} \tag{14}$$'
+    <p>and '$\tau$' is defined as:</p>
+    '$$\tau = \frac{V_{tank}}{C_d A_* c_0}\left(\frac{\gamma+1}{2}\right)^{\frac{\gamma+1}{2(\gamma-1)}} \tag{15}$$'
+    <p>Where '$c_0$' is the speed of sound for air, ~346 m/s at 298K. Finally, the impulse can be calculated.</p>
+    '$$I = A_*\int_0^t\left(P_0\left[1+\left(\frac{\gamma-1}{2}\right)\frac{t}{\tau}\right]^{\frac{2\gamma}{1-\gamma}}\left[\left(\frac{2}{\gamma+1}\right)^{\frac{\gamma}{\gamma-1}}\right](\gamma C_d+1) - P_{atm}\right)dt \tag{16}$$'
+    <p>For Air:</p>
+    '$$I = A_*\int_0^t\left(P_0\left[1+\frac{0.2t}{\tau}\right]^{-7}\left[\frac{5}{6}\right]^{3.5}(2.148) - 101325\ \text{Pa}\right)dt$$'
+    <p>This equation is translatable into a plotting tool like MATLAB or <a href="https://www.desmos.com/calculator/xvk4vnqmab" target="_blank" rel="noopener noreferrer" style="color: var(--accent); font-weight: bold; text-decoration: none;">Desmos</a> where we can compare variables quickly.</p>
+    <p>This model makes two major assumptions: the choked flow's imparted impulse is so much greater than when the chamber isn't choked that it can be ignored, and the process of pressure releasing is adiabatic and not isothermal. To change the model, T would be set constant and '$P_{\text{tank}} = P_0e^{-t/\tau}$', trickling down such that '$I = \int_{0}^{t} A_* \left( P_0 e^{-\frac{t}{\tau}} \left[ \left(\frac{2}{\gamma+1}\right)^{\frac{\gamma}{\gamma-1}} \right] (\gamma C_d + 1) - P_{\text{atm}} \right) dt$'. This was included at the bottom of the Desmos script linked above. If the other consideration is proven false by our data, our intent was to try formulating an additional model for unchoked flow afterwards in our revisions, which was proven unnecessary.</p>
+  
+  </div>
+</details>
+  
+<!-- Centered Text Block -->
+<div class="block text-content" style="max-width: 700px; margin: 0 auto; text-align: center;">
+  <h3>Presentation</h3>
+  <p>With a theoretical model established, we conducted the experiment and compared the results. As part of this project, we were required to present our findings in a formal presentation that can be viewed below.</p>
+  <p>The presentation further explains our experiment, and confirmed the viability of the choked flow model, and in particular, the adiabatic model was more accurate than the isothermal assumption. Adiabatic fell within 15% of the experimental results for all datapoints, and both models showed diminishing accuracy at higher pressures.</p>
+</div>
+
+
+  <!-- PDF Viewer -->
+<div class="pdf-viewer-h" data-pdf-url="contents/projects/choked_flow/ChokedFlowPresentation.pdf">
+  <div class="pdf-viewer-h-toolbar">
+    <span class="pdf-viewer-h-page-info">Loading…</span>
+  </div>
+  <div class="pdf-viewer-h-scroll">
+    <div class="pdf-viewer-h-loading">Loading PDF…</div>
+  </div>
+</div>

@@ -13,9 +13,14 @@ const PROJECT_ORDER = [
     'magnetic-damping',
     'mmn-surface-prep',
     'mousetrap',
-    'frc-2023',
-    'frc-2022'
+    'frc23',
+    'frc22'
     ];
+
+// Pages that are split into their own files and lazy-loaded on demand.
+// This includes every project plus DevBlocks, which isn't part of the
+// project taskbar/prev-next flow but still lives in its own fragment file.
+const LAZY_PAGE_IDS = [...PROJECT_ORDER, 'DevBlocks'];
 
 const DISPLAY_NAMES = {
     'sojo-s26':'SOJO Summer 2026',
@@ -28,15 +33,33 @@ const DISPLAY_NAMES = {
     'magnetic-damping' : 'Eddy Current Brakes',
     'mmn-surface-prep' : 'MMN Surfaces',
     'mousetrap':'Mousetrap Car',
-    'frc-2023' : "FRC '23",
-    'frc-2022' : "FRC '22",
+    'frc23' : "FRC '23",
+    'frc22' : "FRC '22",
     };
 
 const Router = {
+    pageCache: new Map(),   // id -> fetched HTML string (kept for the whole session)
+    loadedPages: new Set(), // ids currently injected into the DOM
+
     init() {
         window.addEventListener('hashchange', () => this.handleRoute());
+
+        // Cold direct-link to a lazy page (e.g. someone lands on #choked-flow
+        // fresh): hide the default 'home' section immediately so it never
+        // flashes on screen before the real target finishes loading.
+        const initialId = window.location.hash.substring(1) || 'home';
+        if (LAZY_PAGE_IDS.includes(initialId)) {
+            const home = document.getElementById('home');
+            if (home) home.classList.remove('active');
+        }
+
         this.handleRoute();
         this.initGlobalEvents();
+
+        // Default prefetch: the first project in the list is the one most
+        // people click into first from the Projects grid, so warm it up
+        // right away regardless of what page they're currently viewing.
+        this.prefetchPage(PROJECT_ORDER[0]);
     },
 
     handleRoute() {
@@ -44,7 +67,16 @@ const Router = {
         this.showPage(id);
     },
 
-    showPage(id) {
+    async showPage(id) {
+        // For lazy pages, make sure the fragment is fetched and injected
+        // into the DOM *before* we touch any .active classes — this is
+        // what guarantees the previously-visible page stays on screen,
+        // untouched, for the entire duration of the fetch. Nothing ever
+        // passes through a state where no page is active.
+        if (LAZY_PAGE_IDS.includes(id)) {
+            await this.ensurePageLoaded(id);
+        }
+
         const pages = document.querySelectorAll('.page');
         let targetFound = false;
 
@@ -60,17 +92,89 @@ const Router = {
         }
 
         window.scrollTo({ top: 0, behavior: 'instant' });
-        
+
+        if (this.pendingScrollTarget) {
+            this.scrollToPendingTarget();
+            }
+
         const bar = document.getElementById('global-project-taskbar');
         if (bar) bar.classList.remove('expanded');
 
         this.updateNav(id);
         this.handleTaskbar(id);
-        
+
         UIComponents.initCarousels();
-        //UIComponents.initModelMaterials();
-        UIComponents.renderMath();   
+        UIComponents.renderMath();
         PDFViewerModule.init();
+        PDFViewerHorizontalModule.init();
+    },
+
+    async ensurePageLoaded(id) {
+        if (this.loadedPages.has(id)) return; // already in the DOM, nothing to do
+
+        const contentContainer = document.getElementById('content');
+        if (!contentContainer) return;
+
+        // Show a lightweight loading placeholder while the fragment fetches.
+        // This is inserted (not yet active) so it never flashes as visible
+        // content on its own — it only becomes visible once showPage()
+        // toggles .active after this function resolves.
+        const placeholder = document.createElement('section');
+        placeholder.id = id;
+        placeholder.className = 'page page-loading';
+        placeholder.innerHTML = '<div class="page-loading-spinner">Loading…</div>';
+        contentContainer.appendChild(placeholder);
+
+        try {
+            const html = await this.fetchPageHTML(id);
+
+            const section = document.createElement('section');
+            section.id = id;
+            section.className = 'page';
+            if (id === 'DevBlocks') {
+                section.style.paddingTop = '100px';
+            }
+            section.innerHTML = html;
+
+            placeholder.replaceWith(section);
+            this.loadedPages.add(id);
+
+            // Now that this page is loaded, quietly warm up its neighbors
+            // in the background so clicking Prev/Next often needs no fetch at all.
+            this.prefetchNeighbors(id);
+        } catch (err) {
+            console.error(`Could not load page "${id}"`, err);
+            placeholder.innerHTML = `<div class="page-loading-error">Could not load this page. <a href="#projects">Back to Projects</a></div>`;
+        }
+    },
+
+    async fetchPageHTML(id) {
+        let html = this.pageCache.get(id);
+        if (!html) {
+            const response = await fetch(`pages/${id}.html`);
+            if (!response.ok) throw new Error(`Failed to fetch pages/${id}.html (${response.status})`);
+            html = await response.text();
+            this.pageCache.set(id, html);
+        }
+        return html;
+    },
+
+    // Fire-and-forget prefetch for a single page id. Silent on failure —
+    // this is purely a background optimization, never something that should
+    // interrupt or error out the current view.
+    prefetchPage(id) {
+        if (!id || this.pageCache.has(id) || this.loadedPages.has(id)) return;
+        this.fetchPageHTML(id).catch(() => {
+            // Swallow errors — a failed prefetch just means the real
+            // navigation later will fetch it fresh instead.
+        });
+    },
+
+    prefetchNeighbors(id) {
+        const idx = PROJECT_ORDER.indexOf(id);
+        if (idx === -1) return; // DevBlocks or anything outside the project sequence has no "neighbors"
+        this.prefetchPage(PROJECT_ORDER[idx - 1]);
+        this.prefetchPage(PROJECT_ORDER[idx + 1]);
     },
 
     updateNav(id) {
@@ -175,9 +279,36 @@ const Router = {
                 }
                 lastScrollY = currentScrollY;
             });
-            }
         }
-    };
+    },
+
+    pendingScrollTarget: null,
+
+    // Navigate to a page and smoothly scroll to a specific element inside it,
+    // handling both "already on that page" and "need to route there first."
+    jumpToSection(pageId, sectionId) {
+        this.pendingScrollTarget = sectionId;
+        if (window.location.hash.substring(1) === pageId) {
+            // Already on this page — hashchange won't fire, so scroll directly.
+            this.scrollToPendingTarget();
+        } else {
+            window.location.hash = pageId; // triggers the normal routing flow
+        }
+    },
+
+    scrollToPendingTarget() {
+        if (!this.pendingScrollTarget) return;
+        const el = document.getElementById(this.pendingScrollTarget);
+        this.pendingScrollTarget = null;
+        if (el) {
+            // Let the instant top-scroll from showPage() finish first,
+            // then smoothly scroll down to the target section.
+            requestAnimationFrame(() => {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        }
+    },
+};
 
 /**
  * COPY TO CLIPBOARD UTILITY
@@ -309,7 +440,7 @@ const PDFViewerModule = {
             return;
         }
 
-                scrollEl.innerHTML = '';
+        scrollEl.innerHTML = '';
         const numPages = pdfDoc.numPages;
         const dpr = window.devicePixelRatio || 1;
 
@@ -342,6 +473,7 @@ const PDFViewerModule = {
             scrollEl.appendChild(wrap);
             pageEls.push(wrap);
         }
+
         const renderedPages = new Set();
 
         const renderPage = async (wrap) => {
@@ -392,6 +524,153 @@ const PDFViewerModule = {
         }, {
             root: scrollEl,
             rootMargin: '600px 0px 600px 0px',
+            threshold: 0
+        });
+
+        pageEls.forEach(el => observer.observe(el));
+
+        // Track which page is most visible for the "Page X of N" label.
+        const labelObserver = new IntersectionObserver((entries) => {
+            let best = null;
+            entries.forEach(entry => {
+                if (entry.isIntersecting && (!best || entry.intersectionRatio > best.intersectionRatio)) {
+                    best = entry;
+                }
+            });
+            if (best) {
+                pageInfo.textContent = `Page ${best.target.dataset.pageNum} of ${numPages}`;
+            }
+        }, {
+            root: scrollEl,
+            threshold: [0.25, 0.5, 0.75]
+        });
+
+        pageEls.forEach(el => labelObserver.observe(el));
+    }
+};
+
+/**
+ * PDF VIEWER — HORIZONTAL (page-by-page, left/right scroll, lazy-loaded)
+ */
+const PDFViewerHorizontalModule = {
+    async init() {
+        const containers = document.querySelectorAll('.pdf-viewer-h:not([data-initialized])');
+        for (const container of containers) {
+            container.dataset.initialized = "true";
+            this.setupViewer(container);
+        }
+    },
+
+    async setupViewer(container) {
+        const url = container.dataset.pdfUrl;
+        if (!url) return;
+
+        const scrollEl = container.querySelector('.pdf-viewer-h-scroll');
+        const pageInfo = container.querySelector('.pdf-viewer-h-page-info');
+
+        let pdfjsLib;
+        try {
+            pdfjsLib = await import('./vendor/pdfjs/pdf.min.mjs');
+            pdfjsLib.GlobalWorkerOptions.workerSrc = './vendor/pdfjs/pdf.worker.min.mjs';
+        } catch (err) {
+            console.error('Failed to load PDF.js', err);
+            scrollEl.innerHTML = '<div class="pdf-viewer-h-loading">Could not load PDF viewer.</div>';
+            return;
+        }
+
+        let pdfDoc;
+        try {
+            pdfDoc = await pdfjsLib.getDocument(url).promise;
+        } catch (err) {
+            console.error('Failed to load PDF', err);
+            scrollEl.innerHTML = '<div class="pdf-viewer-h-loading">Could not load PDF.</div>';
+            return;
+        }
+
+        scrollEl.innerHTML = '';
+        const numPages = pdfDoc.numPages;
+        const dpr = window.devicePixelRatio || 1;
+
+        // Measure every page's own aspect ratio so each placeholder holds
+        // the correct width before its canvas renders in.
+        const pageDims = [];
+        for (let i = 1; i <= numPages; i++) {
+            const page = await pdfDoc.getPage(i);
+            const viewport = page.getViewport({ scale: 1 });
+            pageDims.push({ width: viewport.width, height: viewport.height });
+        }
+
+        const pageEls = [];
+        for (let i = 1; i <= numPages; i++) {
+            const { width, height } = pageDims[i - 1];
+
+            const wrap = document.createElement('div');
+            wrap.className = 'pdf-page-h';
+            wrap.dataset.pageNum = i;
+            wrap.style.aspectRatio = width / height;
+
+            const placeholder = document.createElement('div');
+            placeholder.className = 'pdf-page-h-placeholder';
+            placeholder.style.aspectRatio = width / height;
+            placeholder.textContent = `Page ${i}`;
+            wrap.appendChild(placeholder);
+
+            scrollEl.appendChild(wrap);
+            pageEls.push(wrap);
+        }
+
+        const renderedPages = new Set();
+
+        const renderPage = async (wrap) => {
+            const num = parseInt(wrap.dataset.pageNum, 10);
+            if (renderedPages.has(num)) return;
+            renderedPages.add(num);
+
+            const page = await pdfDoc.getPage(num);
+            const containerHeight = wrap.clientHeight;
+            const unscaledViewport = page.getViewport({ scale: 1 });
+            const scale = (containerHeight / unscaledViewport.height) * dpr;
+            const viewport = page.getViewport({ scale });
+
+            const canvas = document.createElement('canvas');
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            const ctx = canvas.getContext('2d');
+
+            try {
+                await page.render({ canvasContext: ctx, viewport }).promise;
+                wrap.innerHTML = '';
+                wrap.appendChild(canvas);
+            } catch (err) {
+                renderedPages.delete(num); // allow retry if render failed/was cancelled
+            }
+        };
+
+        const unrenderPage = (wrap) => {
+            const num = parseInt(wrap.dataset.pageNum, 10);
+            if (!renderedPages.has(num)) return;
+            renderedPages.delete(num);
+            const { width, height } = pageDims[num - 1];
+            wrap.innerHTML = '';
+            const placeholder = document.createElement('div');
+            placeholder.className = 'pdf-page-h-placeholder';
+            placeholder.style.aspectRatio = width / height;
+            placeholder.textContent = `Page ${num}`;
+            wrap.appendChild(placeholder);
+        };
+
+        // Preload ~1 screen-width ahead/behind; unrender once well outside that margin.
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    renderPage(entry.target);
+                } else {
+                    unrenderPage(entry.target);
+                }
+            });
+        }, {
+            root: scrollEl,
+            rootMargin: '0px 600px 0px 600px', // left/right instead of top/bottom
             threshold: 0
         });
 
