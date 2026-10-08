@@ -1219,13 +1219,14 @@ body.in-project .back-to-projects.scrolled-down {
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
   margin: 1.5rem 0;
-  align-items: start;
+  align-items: flex;
 }
 
 .block-2-wide-slot {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  align-items: center;
 }
 
 .block-2-wide-slot img {
