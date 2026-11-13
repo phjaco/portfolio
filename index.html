@@ -4,7 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patrick Jacobs' Portfolio</title>
-
+  <script>
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('theme'); } catch (e) {}
+    if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+  </script>
   <link rel="stylesheet" href="style.css">
 
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
@@ -23,6 +30,7 @@
       <a href="#highlights">Highlights</a>
       <a href="#resume">Resume</a>
       <a href="#contact">Contact</a>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
     </nav>
   </div>
 
@@ -31,11 +39,11 @@
 <!--MARK: HOME -->
 
 
-    <section id="home" class="page active">
+<!--     <section id="home" class="page active"> -->
 
 
 <!-- Edge to Edge Fullscreen -->
-<div class="parallax-fullscreen">
+<!-- <div class="parallax-fullscreen">
   <div class="parallax-bg-full" style="background-image: url('contents/home/parallax_fsaecar.jpg')"></div>
   <div class="parallax-overlay-full" style=" align-items: flex-start; justify-content: center; padding: 2rem 2rem 2rem; box-sizing: border-box;">
     <div class="text-content" style="text-align: center; color: white;">
@@ -44,11 +52,116 @@
       </h2>
     </div>
   </div>
-</div>
+</div> -->
 
 
-        </section>
+<!-- Replace the ENTIRE <section id="home" class="page active"> ... </section> in index.html with this.
+     Each row = a text box + a full-bleed photo, alternating sides. On scroll, the photo fades in and the text box slides out from behind it. -->
 
+<section id="home" class="page active">
+
+  <div class="about-page">
+
+    <!-- ROW 1: About Me (left) | photo (right) -->
+    <div class="about-section" style="margin-top:-50px">
+      <div class="about-box">
+        <div class="text-content">
+          <h2>Hi, I'm Patrick Jacobs</h2>
+          <p class="about-subtitle">Mechanical Engineering Student</p>
+          <p>
+            I'm a mechanical engineering student who focuses on component design and robotic systems.
+            I've been working with CAD for more than 8 years, primarily spread
+            across Inventor, Fusion, and Solidworks with short dives into other software.
+            I've learned python, computer aided manufacturing, and computational fluid 
+            dynamic simulation skills independently, and have years of experience spread
+            across a wide range of engineering projects.
+          </p>
+          <a href="#projects" class="btn">See My Projects</a>
+          <a href="#contact" class="btn about-btn-outline">Get in Touch</a>
+        </div>
+      </div>
+      <div class="about-photo">
+        <img src="contents/home/mercedes.jpg" alt="Mercedes-Benz Germany">
+      </div>
+    </div>
+
+    <!-- ROW 2: photo (left) | Education (right) -->
+    <div class="about-section">
+      <div class="about-photo">
+        <img src="contents/home/parallax_fsaecar.jpg" alt="FSAE 2025 Competition">
+      </div>
+      <div class="block-bullets about-card">
+        <h2 style="margin: 0 0;">Education</h2>
+        <h3 style="margin: 0 0; color: var(--accent);">University of Virginia</h3>
+        <ul style="margin: 0 0;">
+          <li>
+            M.S. in Mechanical Engineering, 2026 to present.
+          </li>
+          <li>
+            B.S. in Mechanical Engineering, with a minor in Material Science. 2023 to present.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ROW 3: Experience (left) | photo (right) -->
+    <div class="about-section">
+      <div class="block-bullets about-card">
+        <h3 style="margin: 0 0;">Experience</h3>
+        <ul style="margin: 0 0;">
+          <li>
+            <strong>SOJO Industries, Summer 2026</strong>
+            <br>Mechanical engineering intern on mobile robotic packaging lines.
+          </li>
+          <li>
+            <strong>Virginia Motorsports Formula SAE, 2024 to present</strong>
+           <br> Mechanical design member, created front and rear suspension uprights.
+          </li>
+          <li>
+            <strong>FIRST Robotics Team 5804, 2019 to 2023</strong>
+            <br> Team captain in 2022. World Championship qualifier two seasons in a row.
+          </li>
+        </ul>
+      </div>
+      <div class="about-photo">
+        <img src="contents/home/shopphoto.jpg" alt="Photo in the shop.">
+      </div>
+    </div>
+
+    <!-- ROW 4: photo (left) | Skills (right) -->
+    <div class="about-section">
+      <div class="about-photo">
+        <img src="contents/home/frc23offloading.jpg" alt="FRC '23 Bot being taken off field.">
+      </div>
+      <div class="about-box about-skills">
+        <h3>Skills</h3>
+        <div class="about-chips">
+          <span class="about-chip">SolidWorks (CSWA)</span>
+          <span class="about-chip">Inventor</span>
+          <span class="about-chip">Fusion 360</span>
+          <span class="about-chip">Python</span>
+          <span class="about-chip">Matlab</span>
+          <span class="about-chip">3-Axis Machining</span>
+          <span class="about-chip">FEA</span>
+          <span class="about-chip">HTML</span>
+          <span class="about-chip">Project Management</span>
+          <span class="about-chip">Basic CFD</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+  <div class="text-content" style="max-width: 700px; margin: 0 auto; padding: 3rem 0 1rem; text-align: center;">
+      <p>
+        This site was made using Claude as I have no JS or CSS experience.
+        All of the content is written by me how I would communicate it, and 
+        I used what I know of html and what I could put together about the
+        other languages to make tweaks and changes.
+      </p>
+  </div>
+
+</section>  
 
 <!--MARK: PROJECTS-->
 
@@ -75,7 +188,7 @@
           <p style="text-align: left;">13 week mobile robotic packaging engineering internship, created new parts for the packaging lines and fulfilled the duties of a full Mechanical Engineer's position while the site underwent staff transitions.</p>
         </div>
         <div class="redirect-image-container">
-          <img src="contents/projects/sojo26/SOJOLOGO.png" alt="sojo26" style="height: 225px; width: auto;">
+          <img src="contents/projects/sojo26/SOJOLOGO.png" alt="sojo26" class="invert-on-dark" style="height: 225px; width: auto;">
         </div>
       </div> 
       </div>
@@ -149,7 +262,7 @@
           <div class="parallax-bg-full" style="background-image: url('contents/projects/frc23/WorldsWide.jpg'); background-position: 0px bottom;"></div>
           <div class="parallax-overlay-full">
             <div class="text-content" style="text-align: center; color: white;">
-              <h2 style="color: var(--bg); font-size: 4rem; font-weight: bolder; margin-bottom: 0;">
+              <h2 style="color: #fcfaf7; font-size: 4rem; font-weight: bolder; margin-bottom: 0;">
                 Torch 5804
               </h2>
               <h4 style="font-weight: bold; margin-top: 0; color: lightcyan;">First Robotics Competition</h4>
@@ -224,13 +337,13 @@
             <a href="#fsae-uprights" class="btn">View Details</a>
           </div>
 
-          <model-viewer 
+          <model-viewer class="keep-accent-on-dark" style="background-color: var(--accent);"
             src="contents/projects/uprights/fupright.glb" 
             alt="A 3D model of one of the uprights"
             auto-rotate 
             camera-controls 
             shadow-intensity="1"
-            style="background-color: #f0f0f0; border-radius: 12px;">
+            style="border-radius: 12px;">
           </model-viewer>
 
         </div>

@@ -23,7 +23,7 @@
 <div class="block text-content" style="max-width: 700px; margin: 0 auto; text-align: center;">
   <h3>Choked Flow Regime</h3>
   <p>Choked flow occurs when a vessel's interior pressure is significantly greater than that of the pressure downstream, surpassing a critical pressure ratio. When the vessel pressure exceeds this critical amount, the flow velocity is approximated as holding constant at the speed of sound for the fluid.</p>
-  <img src="contents/projects/choked_flow/choked_flow_example.png" alt="Example Diagram" style='max-width: 500px; height:auto;'>
+  <img src="contents/projects/choked_flow/choked_flow_example.png" class="invert-on-dark" alt="Example Diagram" style='max-width: 500px; height:auto;'>
   <p>For example, if the upstream pressure is 14.7 psi (1 atm), vessel pressure is 85 psi, and the fluid is dry air at 20°C, then the heat capacity ratio is 1.4, the critical pressure ratio is 1.893, and the flow velocity is roughly the speed of sound while discharging from 85 psi to 27.8 psi. Our additional assumption beyond Choked Flow applying was that the air released following choked flow would not be significant.</p>
 </div>
 
@@ -34,7 +34,7 @@
   </summary>
   <div class="dropdown-content">
     <p>These are the original workings I used when developing the theoretical model. They were largely based off a paper by Dean Wheeler from BYU that I'd found, but their approach targeted a relationship between the pressure and temperature in the tank relative to a time constant.</p>
-    <p>The goal of our math was to determine an impulse by integrating the standard thrust equation, so somewhere near eqn 9 we deviate.</p>
+    <p>The goal of our math was to determine an impulse by integrating the standard thrust equation, so somewhere near equation 9 we deviated.</p>
     <p>First, the Ideal Gas Law:</p>
     '$$PV = nRT; \quad \frac{P}{RT} = \frac{n}{V} \tag{1}$$'
     <p>By substituting '$\rho = \frac{nM}{V}$', where M is the molecular weight of air, ~0.02896 kg/mol, the following is derived:</p>
@@ -79,7 +79,7 @@
 <div class="block text-content" style="max-width: 700px; margin: 0 auto; text-align: center;">
   <h3>Presentation</h3>
   <p>With a theoretical model established, we conducted the experiment and compared the results. As part of this project, we were required to present our findings in a formal presentation that can be viewed below.</p>
-  <p>The presentation further explains our experiment, and confirmed the viability of the choked flow model, and in particular, the adiabatic model was more accurate than the isothermal assumption. Adiabatic fell within 15% of the experimental results for all datapoints, and both models showed diminishing accuracy at higher pressures.</p>
+  <p>The presentation further explains our experiment, and confirmed the viability of the choked flow model. Particularly the adiabatic model was seen to be more accurate than the isothermal assumption. Adiabatic fell within 15% of the experimental results for all datapoints, and both models showed diminishing accuracy at higher pressures.</p>
 </div>
 
 

@@ -344,18 +344,74 @@ const UIComponents = {
             carousel.dataset.initialized = "true";
             const track = carousel.querySelector('.carousel-track');
             const nav = carousel.querySelector('.carousel-nav');
-            if (!track || !nav) return;
-
-            Array.from(track.children).forEach((_, i) => {
-                const dot = document.createElement('button');
-                dot.className = `dot ${i === 0 ? 'active' : ''}`;
-                dot.onclick = (e) => {
-                    e.stopPropagation();
-                    track.style.transform = `translateX(-${i * 100}%)`;
-                    nav.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
-                    dot.classList.add('active');
-                };
-                nav.appendChild(dot);
+            if (!track) return;
+ 
+            const slides = Array.from(track.children);
+            if (slides.length < 2) return; // nothing to scroll through
+ 
+            let current = 0;
+            const dots = [];
+ 
+            // Move to slide i (wraps around at both ends) and sync the dots
+            const goTo = (i) => {
+                current = (i + slides.length) % slides.length;
+                track.style.transform = `translateX(-${current * 100}%)`;
+                dots.forEach((d, n) => d.classList.toggle('active', n === current));
+            };
+ 
+            // Dots (only if the carousel has a .carousel-nav)
+            if (nav) {
+                slides.forEach((_, i) => {
+                    const dot = document.createElement('button');
+                    dot.className = `dot ${i === 0 ? 'active' : ''}`;
+                    dot.onclick = (e) => {
+                        e.stopPropagation(); // don't also trigger the side-click below
+                        goTo(i);
+                    };
+                    nav.appendChild(dot);
+                    dots.push(dot);
+                });
+            }
+ 
+            // Arrow hints that fade in on hover (purely visual)
+            ['prev', 'next'].forEach(dir => {
+                const arrow = document.createElement('span');
+                arrow.className = `carousel-arrow ${dir}`;
+                arrow.textContent = dir === 'prev' ? '❮' : '❯';
+                carousel.appendChild(arrow);
+            });
+ 
+            // Clickable zones hug the left and right edges, around where the arrow
+            // bubbles sit. The bubble spans ~12px-52px from the edge, so 100px
+            // leaves some margin. Change ZONE_PX to widen or narrow the zones.
+            const ZONE_PX = 100;
+ 
+            // Returns 'left', 'right', or null if the mouse is in the middle
+            const getSide = (e) => {
+                const rect = carousel.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const zone = Math.min(ZONE_PX, rect.width / 2);
+                if (x <= zone) return 'left';
+                if (x >= rect.width - zone) return 'right';
+                return null;
+            };
+ 
+            carousel.addEventListener('click', (e) => {
+                const side = getSide(e);
+                if (side === 'left') goTo(current - 1);
+                else if (side === 'right') goTo(current + 1);
+            });
+ 
+            // Emphasize the arrow for the side being hovered; hand cursor only in a zone
+            carousel.addEventListener('mousemove', (e) => {
+                const side = getSide(e);
+                if (side) carousel.dataset.side = side;
+                else delete carousel.dataset.side;
+                carousel.style.cursor = side ? 'pointer' : 'default';
+            });
+            carousel.addEventListener('mouseleave', () => {
+                delete carousel.dataset.side;
+                carousel.style.cursor = 'default';
             });
         });
     },
@@ -695,3 +751,46 @@ const PDFViewerHorizontalModule = {
         pageEls.forEach(el => labelObserver.observe(el));
     }
 };
+
+// DARK MODE TOGGLE — paste at the very end of app.js (or into its own file)
+(function () {
+  const root = document.documentElement;
+  const btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+
+  function apply(theme) {
+    root.setAttribute('data-theme', theme);
+    btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+    btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+
+  // The <head> snippet already set data-theme; just sync the icon.
+  apply(root.getAttribute('data-theme') || 'light');
+
+  btn.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    apply(next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  });
+})();
+
+// ABOUT PAGE — when a row scrolls into view, the photo fades in and the text box slides out from behind it
+// (paste at the end of app.js)
+(function () {
+  const items = document.querySelectorAll('.about-page .about-section');
+  if (!items.length || !('IntersectionObserver' in window)) return;
+
+  // Only hide the rows once we know the observer is running
+  document.documentElement.classList.add('reveal-ready');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target); // reveal once, then leave it
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+
+  items.forEach(el => observer.observe(el));
+})();

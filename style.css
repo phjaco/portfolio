@@ -56,6 +56,89 @@ body {
 }
 
 /* -------------------------------------------------------------------------- */
+/* DARK MODE — variables swap via [data-theme="dark"] on <html>               */
+/* -------------------------------------------------------------------------- */
+
+:root[data-theme="dark"] {
+  --bg: #171311;
+  --text: #e8ddd6;
+  --card-bg: #241f1c;
+  --nav-bg: rgba(36, 31, 28, 0.8);
+  --accent: #92192b;
+  --accent-hover: #69121f;
+  color-scheme: dark;
+}
+
+/* Things that hardcoded light colors instead of using variables */
+[data-theme="dark"] .nav {
+  background: var(--nav-bg);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+[data-theme="dark"] .project-taskbar:hover {
+  background: rgba(36, 31, 28, 0.98);
+}
+[data-theme="dark"] .carousel {
+  background: #241f1c;
+}
+[data-theme="dark"] model-viewer {
+  background-color: #241f1c; /* beats the inline style in index.html */
+}
+[data-theme="dark"] .table-container,
+[data-theme="dark"] .block-bullets {
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+/* The <hr> separators use an inline dark rgba, so they need !important */
+[data-theme="dark"] hr {
+  background: rgba(255, 255, 255, 0.12) !important;
+
+  
+}
+[data-theme="dark"] .invert-on-dark {
+  filter: invert(1);
+}
+
+
+[data-theme="dark"] .keep-accent-on-dark {
+  background-color: var(--accent);
+
+
+}
+
+
+
+
+
+
+/* -------------------------------------------------------------------------- */
+/* THEME TOGGLE BUTTON (lives inside .nav)                                    */
+/* -------------------------------------------------------------------------- */
+
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px 14px;
+  border-radius: 25px;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--text);
+  transition: background-color 0.4s ease, transform 0.2s ease;
+}
+.theme-toggle:hover {
+  background-color: rgba(122, 222, 233, 0.2);
+}
+.theme-toggle:active {
+  transform: scale(0.9);
+}
+
+/* Smooth color change when toggling */
+body, .nav, .table-container, .block-bullets, .carousel, model-viewer {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+
+/* -------------------------------------------------------------------------- */
 /* 2. FLOATING DOCK NAVIGATION                         */
 /* -------------------------------------------------------------------------- */
 /* --- FLOATING NAV --- */
@@ -1285,3 +1368,214 @@ body.in-project .back-to-projects.scrolled-down {
   max-width: 100%;
 }
 
+/* -------------------------------------------------------------------------- */
+/* CAROUSEL — click left/right half to navigate; arrow hints on hover          */
+/* -------------------------------------------------------------------------- */
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) scale(1);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+  color: white;
+  font-size: 1rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease,
+              background-color 0.25s ease, color 0.25s ease;
+}
+
+.carousel-arrow.prev { left: 0.75rem; }
+.carousel-arrow.next { right: 0.75rem; }
+
+/* Hovering the carousel: both arrows show, but dimmed */
+.carousel:hover .carousel-arrow {
+  opacity: 0.35;
+}
+
+/* Hovering a side: that arrow grows, lights up, and nudges outward */
+.carousel[data-side="left"]:hover .carousel-arrow.prev {
+  opacity: 1;
+  transform: translateY(-50%) translateX(-3px) scale(1.2);
+  background: var(--accent);
+  color: #102a30;
+}
+.carousel[data-side="right"]:hover .carousel-arrow.next {
+  opacity: 1;
+  transform: translateY(-50%) translateX(3px) scale(1.2);
+  background: var(--accent);
+  color: #102a30;
+}
+
+/* Touch screens have no hover, so keep both faintly visible */
+@media (hover: none) {
+  .carousel-arrow { opacity: 0.6; }
+}
+
+/* -------------------------------------------------------------------------- */
+/* ABOUT (home page) — alternating full-bleed photo and text panel rows        */
+/* -------------------------------------------------------------------------- */
+
+/* While the home page is showing, the whole page background matches the text panels
+   (white in light mode, the dark card color in dark mode). Other pages keep --bg. */
+body:has(#home.active) {
+  background: var(--card-bg);
+}
+
+/* Stops the 100vw rows below from causing a sideways scrollbar */
+html:has(.about-page) {
+  overflow-x: hidden;
+}
+
+.about-page {
+  padding-top: 2rem;
+
+  /* Where the text boxes line up with the rest of the site's 1000px column */
+  --about-edge: max(2rem, calc(50vw - 500px + 2rem));
+}
+
+/* One row = a text box and a photo. The row breaks out of <main> to span the
+   whole screen, so each photo runs from the middle to the edge of the browser.
+   To flip a row, swap the order of its two children in the HTML. */
+.about-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  margin-bottom: 0; /* rows touch, so photos and text panels meet with no gaps */
+
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+
+/* Photo: no box, runs to the screen edge. The <img> is absolutely positioned so
+   it never forces the row taller; it just fills the half of the screen it's in. */
+.about-photo {
+  position: relative;
+  min-height: 440px;
+  background: rgba(93, 64, 55, 0.08); /* placeholder tint until the photo loads */
+}
+
+.about-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Text boxes: each one is a panel that fills its whole half of the screen, edge
+   to edge and top to bottom. Padding keeps the text lined up with the site's
+   1000px column, and the content is centered vertically in the panel. */
+.about-box,
+.about-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: none;
+  margin: 0;
+  border-radius: 0;
+  background: var(--card-bg);
+}
+
+/* No outline or shadow. The extra specificity beats the older .block-bullets and
+   dark-mode rules that also set a border/shadow on the experience and education boxes. */
+.about-page .about-section > .about-box,
+.about-page .about-section > .about-card {
+  border: none;
+  box-shadow: none;
+}
+
+.about-section > :first-child:not(.about-photo) {
+  padding: 2.5rem 2.5rem 2.5rem var(--about-edge);
+}
+.about-section > :last-child:not(.about-photo) {
+  padding: 2.5rem var(--about-edge) 2.5rem 2.5rem;
+}
+
+.about-subtitle {
+  margin: -0.5rem 0 1rem 0;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* Secondary (outlined) button next to the main one */
+.about-btn-outline {
+  background: transparent;
+  color: var(--text);
+  border: 2px solid var(--accent);
+  padding: 8px 24px; /* 2px less than .btn to offset the border */
+  margin-left: 0.5rem;
+}
+.about-btn-outline:hover {
+  background: var(--accent);
+  color: white;
+}
+
+/* Skill chips */
+.about-skills h3 {
+  margin: 0 0 1rem 0;
+  color: var(--accent);
+}
+
+.about-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.about-chip {
+  background: var(--bg);
+  border: 1px solid rgba(93, 64, 55, 0.15);
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .about-chip {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Mobile: stack, with the text box above its photo */
+@media (max-width: 768px) {
+  .about-section {
+    grid-template-columns: 1fr;
+  }
+  .about-section > .about-photo { order: 2; min-height: 260px; }
+
+  .about-section > :first-child:not(.about-photo),
+  .about-section > :last-child:not(.about-photo) {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .about-btn-outline { margin-left: 0; }
+}
+
+/* Outlined text block — same look as .table-container */
+.text-box {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  border: 1px solid rgba(93, 64, 55, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Keeps the padding even by removing the extra space above the first
+   and below the last element inside the box */
+.text-box > :first-child { margin-top: 0; }
+.text-box > :last-child  { margin-bottom: 0; }
+
+[data-theme="dark"] .text-box {
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}

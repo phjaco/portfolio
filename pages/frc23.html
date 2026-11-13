@@ -1,12 +1,30 @@
-<div class="block text-content" style="text-align: center;">
+<div class="block text-content" style="text-align: center; margin-top: -50px">
 
-    <div class="block-1-wide" style="max-width:750px; margin: 0 auto;">
-    <img src="contents/projects/frc23/queued.jpg" style="max-width: 900px; margin: 0 0;" alt="Description">
-  </div>
-    <h1>FRC '23</h1>
+
+    <!-- 3D Model Viewer - Full Page -->
+      <div class="block" style = "margin: 0 1rem;">
+        <div class="text-content" style="margin-bottom: 0; margin-top: 0">
+
+        </div>
+
+        <model-viewer class="keep-accent-on-dark" style="height: 500px; background-color: var(--accent); margin: 0 0;"
+          src="contents/projects/frc23/ClawGantry.glb"
+          alt="A 3D model"  
+          camera-controls 
+          camera-orbit="315deg 60deg 90%"
+          environment-image="neutral" 
+          exposure="1.1"
+          tone-mapping="aces"
+          shadow-intensity="0.8"
+          shadow-softness="1"
+          >
+        </model-viewer>
+      </div>
+
+      <h1>FRC '23</h1>
 
     <!-- Separator Block-->
-<hr style="border: 0; width: 900px; height: 1px; background: rgba(0,0,0,0.1); margin: 0 0;">
+<hr style="border: 0; width: 900px; height: 1px; background: rgba(0,0,0,0.1); margin: 1rem 0;">
     <p>This robotics season was a refinement of the same principles we used in
       the '22 season. The game this year was simpler in concept, so the design
       metas were less open for innovation. Conceptually it required a vertical
@@ -19,6 +37,11 @@
       but since there was so much less hectic design and on the spot fixing, this season
       didn't contain the same excitement as '22.  
     </p>
+
+
+    <div class="block-1-wide" style="max-width:750px; margin: 0 auto;">
+    <img src="contents/projects/frc23/queued.jpg" style="max-width: 900px; margin: 0 0;" alt="Description">
+    </div>
 
       <div class="block-2-wide" style="align-content: center;">
         <div class="block-2-wide-slot" style="align-content: center;">
@@ -42,12 +65,22 @@
       processes as the previous year; designing a geometric blank, applying a load, narrowing
       the shape of the part down based on the way stress flowed, and producing the parts. I believe
       we broke two endmills over the course of the season, which was a significant improvement from
-      the prior year.  
+      the prior year. Version 11.25 of the claw is shown below, though it never made it on the bot.
     </p>
 
-      <div class="block-1-wide">
-       <img src="contents/projects/frc23/23team.jpg" style="max-width: 900px; margin: 1rem 0;" alt="Description">
-      </div>
+       <model-viewer style="height: 600px; background-color: var(--accent);" 
+          src="contents/projects/frc23/ClawModel.glb"
+          alt="A 3D model" 
+          camera-controls 
+          camera-orbit="0deg 90deg auto"
+          environment-image="neutral" 
+          exposure="1"
+          tone-mapping="aces"
+          shadow-intensity="0.8"
+          shadow-softness=".7"
+          background-color="#2b2b2b"
+          >
+        </model-viewer>
 
     <p>
       We were the third pick of the third alliance at the World championship,
@@ -57,6 +90,17 @@
       world in actual play of 3,290 teams, roughly twice as strong as the prior year in which
       we were statistically 251st of 3,062 teams. 
     </p>
+
+
+    
+      <div class="block-1-wide">
+       <img src="contents/projects/frc23/23team.jpg" style="max-width: 900px; margin: 1rem 0;" alt="Description">
+      </div>
+
+
+
   <hr style="border: 0; width: 900px; height: 1px; background: rgba(0,0,0,0.1); margin: 0 0;">
   </div>
+
+  
   
