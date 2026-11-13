@@ -794,3 +794,55 @@ const PDFViewerHorizontalModule = {
 
   items.forEach(el => observer.observe(el));
 })();
+
+// MOBILE — on touch screens, let one-finger swipes scroll the page over 3D viewers
+// instead of rotating the model. Two-finger/horizontal drags still rotate it.
+// Paste at the end of app.js. Handles pages that are loaded in after the first paint.
+(function () {
+  if (!window.matchMedia('(pointer: coarse)').matches) return;
+
+  function fix(root) {
+    if (root.matches && root.matches('model-viewer:not([touch-action])')) {
+      root.setAttribute('touch-action', 'pan-y');
+    }
+    if (root.querySelectorAll) {
+      root.querySelectorAll('model-viewer:not([touch-action])')
+        .forEach(m => m.setAttribute('touch-action', 'pan-y'));
+    }
+  }
+
+  fix(document);
+
+  new MutationObserver(mutations => {
+    mutations.forEach(m => m.addedNodes.forEach(n => {
+      if (n.nodeType === 1) fix(n);
+    }));
+  }).observe(document.body, { childList: true, subtree: true });
+})();
+
+
+// PROJECT TASKBAR — on touch screens the first tap opens the bar, a second tap on
+// Prev/Next navigates. (Without this, the tap that opens the bar also hit one of the
+// hidden buttons underneath, so it jumped forward or back at random.)
+// Pairs with the "PROJECT TASKBAR" block at the end of mobile.css.
+(function () {
+  const bar = document.getElementById('global-project-taskbar');
+  if (!bar) return;
+
+  const isTouch = () => window.matchMedia('(hover: none)').matches;
+
+  bar.addEventListener('click', (e) => {
+    if (!isTouch()) return;
+    if (!bar.classList.contains('expanded')) {
+      bar.classList.add('expanded');                    // first tap: just open
+    } else if (!e.target.closest('.task-item')) {
+      bar.classList.remove('expanded');                 // tap on the bar itself: close
+    }
+    // Taps on Prev/Next are handled by the router, which also closes the bar.
+  });
+
+  // Tapping anywhere else on the page closes it
+  document.addEventListener('click', (e) => {
+    if (!bar.contains(e.target)) bar.classList.remove('expanded');
+  });
+})();

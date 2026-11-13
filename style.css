@@ -1579,3 +1579,251 @@ html:has(.about-page) {
   border-color: rgba(255, 255, 255, 0.08);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
+
+/*!Mobile */
+/* -------------------------------------------------------------------------- */
+/* MOBILE POLISH — append to the END of style.css                              */
+/* Your layout blocks (grid-block, block-2-wide, about rows, etc.) already     */
+/* stack at 768px. This file fixes the parts that don't.                       */
+/* -------------------------------------------------------------------------- */
+
+/* Images never overflow their container */
+img { max-width: 100%; }
+
+/* ---- Tablets and phones (768px and under) ------------------------------- */
+@media (max-width: 768px) {
+
+  /* Less side padding and a shorter gap under the floating nav.
+     width: 100% matters: <body> is a flex column and main has auto side margins, so
+     without it main shrinks to fit its content and one wide image or table can push
+     the whole page wider than the phone screen. */
+  main {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 1rem;
+    margin-top: 90px;
+  }
+
+  /* 6rem between blocks is huge on a phone */
+  .block {
+    margin-bottom: 3rem;
+  }
+
+  /* Wide tables scroll sideways inside their card instead of stretching the page */
+  .table-container {
+    overflow-x: auto;
+    padding: 1rem;
+  }
+
+  /* Project pages set fixed widths/heights inline (e.g. the ebike "Issues" boxes).
+     !important is needed to beat inline styles. */
+  .text-box {
+    width: auto !important;
+    height: auto !important;
+  }
+  hr {
+    width: 100% !important;
+  }
+
+  /* Big hero/section titles set inline in rem; scale them down with the screen */
+  .parallax-overlay-full h2 {
+    font-size: clamp(1.8rem, 9vw, 3rem) !important;
+    letter-spacing: 1px !important;
+  }
+
+  /* Shorter 3D viewers so there's room to scroll past them.
+     !important because several pages set height inline (500px, 600px). */
+  model-viewer {
+    height: 340px !important;
+  }
+
+  /* Carousels with fixed inline sizes (the 800x800 FEA carousel on the uprights page)
+     fill the screen width instead. The track must match the carousel width so the
+     slide-by-100% movement still lines up. */
+  .carousel,
+  .carousel-track {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  /* The 500px parallax banner is too tall for a phone */
+  .parallax-container {
+    height: 300px;
+  }
+
+  /* PDF viewers */
+  .pdf-viewer-scroll {
+    padding: 1rem 0.5rem;
+  }
+  /* Slide-deck PDF: height follows the screen width so a landscape slide roughly
+     fits instead of being 80% of the phone's height (and 3x its width) */
+  .pdf-viewer-h-scroll {
+    height: 56vw;
+    min-height: 220px;
+    padding: 1rem 0.5rem;
+  }
+
+  /* 2-up image block (clock geartrain page): on phones the two small squares sit side by
+     side with the large image underneath. The page's existing rules left the large image in
+     a column 2 that doesn't exist on mobile, which squeezed the two squares down to 0px wide.
+     [data-large] raises the specificity so these beat the desktop placement rules. */
+  .image-block-2-1,
+  .image-block-2-1[data-large="right"],
+  .image-block-2-1[data-large="left"] {
+    grid-template-columns: 1fr 1fr;
+  }
+  .image-block-2-1[data-large] .img-a {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .image-block-2-1[data-large] .img-b {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .image-block-2-1[data-large] .img-large {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    aspect-ratio: auto;
+  }
+
+  /* Scroll-to-top sits above the bottom taskbar instead of overlapping it */
+  #scroll-top {
+    bottom: 90px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* ---- Phones (600px and under) -------------------------------------------- */
+@media (max-width: 600px) {
+
+  /* Floating nav: tighter so all 5 links + the theme button fit */
+  .nav-container {
+    width: max-content;
+    max-width: calc(100vw - 12px);
+  }
+  .nav {
+    padding: 4px;
+    gap: 0;
+    max-width: 100%;
+    overflow-x: auto;       /* safety net: scrolls instead of getting cut off */
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a {
+    padding: 0.55rem 0.6rem;
+    font-size: 0.72rem;
+  }
+  .theme-toggle {
+    padding: 0.5rem 0.6rem;
+  }
+
+  /* Some pages cap images with an inline max-width in px (400px, 500px, 900px), which
+     beats the plain max-width: 100% and pushes the page wider than the screen. */
+  img {
+    max-width: 100% !important;
+    height: auto;
+  }
+
+  /* Project grid: 3 columns is too small to tap, so use 2.
+     Add class="project-grid" to that div in index.html (see notes). */
+  .project-grid,
+  .block[style*="repeat(3, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-rows: none !important;
+    gap: 1rem !important;
+  }
+}
+
+/* ---- Very small phones (380px and under) --------------------------------- */
+@media (max-width: 380px) {
+  .nav a {
+    padding: 0.5rem 0.45rem;
+    font-size: 0.66rem;
+  }
+  .theme-toggle {
+    padding: 0.45rem 0.45rem;
+  }
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* PROJECT TASKBAR (the bottom prev/next pill) ON TOUCH SCREENS                */
+/* On a touchscreen a tap counts as hover AND click at the same moment. The    */
+/* hidden Prev/Next buttons sit under the circle, so the tap hit one of them   */
+/* before the bar finished opening. On touch, the first tap now only opens the */
+/* bar (mobile.js adds .expanded) and the buttons can't be tapped until then.  */
+/* -------------------------------------------------------------------------- */
+
+@media (hover: none) {
+  
+  .project-taskbar, .taskbar-circle, .taskbar-tabs {
+    transition-duration: 0.1s ease, padding 0.1s ease !important;
+  }
+  
+  /* Closed: ignore the sticky :hover so it stays a circle */
+  .project-taskbar:not(.expanded):hover {
+    width: 54px;
+    min-width: 0;
+    padding: 0;
+    background: var(--accent);
+    border: none;
+  }
+  .project-taskbar:not(.expanded):hover .taskbar-circle {
+    opacity: 1;
+    transform: none;
+  }
+  .project-taskbar:not(.expanded):hover .taskbar-tabs {
+    opacity: 0;
+  }
+
+  /* Closed: the invisible buttons can't be tapped */
+  .project-taskbar:not(.expanded) .taskbar-tabs {
+    pointer-events: none;
+  }
+
+  /* Open (same look as the desktop hover state) */
+  .project-taskbar.expanded {
+    width: auto;
+    min-width: 400px;
+    padding: 0 25px;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid var(--accent);
+  }
+  .project-taskbar.expanded .taskbar-circle {
+    opacity: 0;
+    transform: rotate(90deg) scale(0);
+  }
+  .project-taskbar.expanded .taskbar-tabs {
+    opacity: 1;
+  }
+  [data-theme="dark"] .project-taskbar.expanded {
+    background: rgba(36, 31, 28, 0.98);
+  }
+}
+
+/* The opened bar must fit a phone screen (it was a fixed 400px minimum) */
+@media (max-width: 600px) {
+  .project-taskbar:hover,
+  .project-taskbar.expanded {
+    width: calc(100vw - 24px);
+    min-width: 0;
+    padding: 0 10px;
+  }
+  .taskbar-tabs {
+    gap: 8px;
+  }
+  .task-item {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 9px 8px;
+    font-size: 0.68rem;
+    letter-spacing: 0;
+  }
+}
